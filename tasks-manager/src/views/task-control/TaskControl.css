@@ -1,0 +1,28 @@
+
+
+.taskControl__container {
+
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    
+}
+
+.taskControl__title {
+    width: 500px;
+    margin: 0 auto;
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    grid-column: span 2;
+}
+
+.taskControl__search {
+    width: 50vw;
+    justify-self: end;
+}
+
+.add-task {
+    width: 300px;
+    justify-self: center;
+}
