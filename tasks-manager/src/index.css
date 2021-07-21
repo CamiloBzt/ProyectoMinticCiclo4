@@ -13,6 +13,7 @@ code {
 }
 
 :root {
-  --main-color: #3b7575;
+  --main-color: #101f1f;
   --main-white: white;
+  --transition: all 0.3s linear;
 }

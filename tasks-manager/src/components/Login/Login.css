@@ -13,6 +13,7 @@
     justify-content: center;
     align-items: center;
     background-color: var(--main-color);
+    position: relative;
   }
   
   .login__container {
@@ -105,4 +106,21 @@
     text-align: left;
     padding-left: 2rem;
     /*    display: none; */
+  }
+
+  .return-btn {
+    height: 3rem;
+    width: 6rem;
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+    background-color: whitesmoke;
+    border: none;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    border-radius: 5px;
+  }
+
+  .return-btn:hover {
+    transform: scale(1.1);
   }

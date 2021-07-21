@@ -1,10 +1,17 @@
 import React from 'react';
 import './Login.css';
+import { Link } from 'react-router-dom';
 
 export const Login = () => {
   
     return (
         <div className="login__outside">
+
+        <Link to="/home">
+          <button className="return-btn">Regresar</button>
+        </Link>
+        
+
     <div className="login__container">
       <form action="#" className="login">
         <div className="login__avatar"></div>
@@ -28,9 +35,13 @@ export const Login = () => {
             className="login__input"
           />
         </div>
+        <Link 
+                to="/task-control"
+            >
         <button type="submit" className="login__button">
-          Ingresar
+                Ingresar
         </button>
+        </Link>
       </form>
     </div>
   </div>
