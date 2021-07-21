@@ -1,0 +1,19 @@
+button {
+    width: 160px;
+}
+
+.priority-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.remember-btn-group {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+}
+
+.btn-crear {
+    margin: 1rem auto;
+}

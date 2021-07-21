@@ -1,0 +1,25 @@
+/* .taskControl__search {
+    width: 50vw;
+    justify-self: end;
+}
+
+ */
+
+.manage__container {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-group  {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+button {
+    width: 160px;
+}
+

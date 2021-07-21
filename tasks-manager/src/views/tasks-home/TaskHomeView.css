@@ -1,0 +1,110 @@
+.about-us {
+    margin-top: 4rem;
+}
+
+
+.section-center {
+    width: 80vw;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.about-us__info {
+    background: linear-gradient( #282c35, rgba(0,0,0, 0.3)), url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/GNOME_Todo_icon_2019.svg/1200px-GNOME_Todo_icon_2019.svg.png');
+   /*  background-color: linear-gradient(); */
+   background-repeat: no-repeat;
+   background-size: cover;
+    padding: 6rem 4rem;
+    line-height: 1.9rem;
+    color: white;
+   /*  font-weight: bold; */
+    font-size: 1.3rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+   -webkit-box-shadow: 0px 3px 11px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 0px 3px 11px 0px rgba(0,0,0,0.75);
+box-shadow: 0px 3px 11px 0px rgba(0,0,0,0.75);
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.about-us__reason{
+    border: 4px dashed var(--main-color);
+    margin: 0;
+    padding: 4rem 2rem;
+    position: relative;
+    width: 80%;
+    z-index: 0;
+    transition: var(--transition);
+}
+
+.about-us__reason:hover {
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.about-us__reason p {
+    margin-bottom: 0;
+    margin-top: 1rem;
+    line-height: 1.4rem;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+/* .about-us__reason h4  */
+
+.about-us__reason:nth-child(2n + 1) {
+background-color: rgb(239,222,205);
+border-top-right-radius: 2rem;
+border-bottom-right-radius: 2rem;
+margin-left: 2rem;
+border-left: none;
+border-bottom: none;
+}
+
+.about-us__reason:nth-child(2n) {
+background-color: var(--main-white);
+border-top-left-radius: 2rem;
+border-bottom-left-radius: 2rem;
+margin-right: 2rem;
+padding-right: 0;
+border-right: none;
+    border-bottom: none;
+}
+
+.number {
+    position: absolute;
+    top: 50%;
+    display: flex;
+    transform: translate(-50%, -50%);
+    background-color: var(--main-color);
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    color: var(--main-white);
+    font-weight: bold;
+}
+
+.about-us__reason:nth-child(2n) .number{
+    left: 0;
+}
+
+.about-us__reason:nth-child(2n + 1) .number{
+    right: 0;
+    transform: translate(50%, -50%);
+}
+
+
+
+@media screen and (min-width: 800px) {
+    
+    .section-center{
+        display: grid;
+        grid-template-columns: 1fr 450px;
+        gap: 3rem;
+    }
+
+}
