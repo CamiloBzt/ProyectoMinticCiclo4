@@ -43,7 +43,7 @@ const Registrarse = () => {
     return (
 
     <div className="products__outside">
-        <div className="products__container">
+      {/*   <div className="products__container"> */}
         <div class="container mt-5 d-flex justify-content-center">
             <form onSubmit={validar} className="form-groups">
 
@@ -129,7 +129,7 @@ const Registrarse = () => {
                 
             </form>
         </div>
-        </div>
+     {/*    </div> */}
         </div>
 
        
