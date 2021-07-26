@@ -7,7 +7,7 @@ var port = 4000
 
 mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodxb+srv://mongo:mongo@cluster0.tvfqe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true,
+mongoose.connect('mongodb+srv://mongo:mongo@cluster0.tvfqe.mongodb.net/Cluster0?retryWrites=true&w=majority', { useNewUrlParser: true,
 useUnifiedTopology: true
 })
         .then(() => {
