@@ -7,7 +7,9 @@ var port = 4000
 
 mongoose.set('useFindAndModify', false);
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/api_rest_control_task', { useNewUrlParser: true })
+mongoose.connect('mongodxb+srv://mongo:mongo@cluster0.tvfqe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true,
+useUnifiedTopology: true
+})
         .then(() => {
             console.log('Conexión a la DB exitosa');
 
@@ -18,5 +20,5 @@ mongoose.connect('mongodb://localhost:27017/api_rest_control_task', { useNewUrlP
 
         })
         .catch((err) => {
-        
+            console.log(err);
         });
