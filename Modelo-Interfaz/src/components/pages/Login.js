@@ -2,11 +2,15 @@ import React from 'react';
 import './Login.css';
 
 export const Login = () => {
+
+   const handleSubmit = (ev) => {
+    ev.preventDefault();
+   };
   
   return (
 <div className="login__outside">
   <div className="login__container">
-    <form action="#" className="login">
+    <form className="login" onSubmit = { handleSubmit }>
       <div className="login__avatar"></div>
 
   {/* <div className="login__error">
@@ -20,6 +24,7 @@ export const Login = () => {
           type="email"
           id="user"
           className="login__input"
+          required
         />
       </div>
       <div className="login__field">
@@ -28,6 +33,7 @@ export const Login = () => {
           type="password"
           id="password"
           className="login__input"
+          required
         />
       </div>
       <button type="submit" className="login__button">

@@ -58,7 +58,7 @@ export default function TaskModal() {
   const body = (
     <div style={modalStyle} className={classes.paper}>
 
-    <form onSubmit = { handleFormSubmit }>
+    <form onSubmit = { (ev) => handleFormSubmit(ev, formValues) }>
 
       <h2 id="simple-modal-title">New Task</h2>
 
@@ -68,12 +68,13 @@ export default function TaskModal() {
         </label>
         <input
           type="text"
-          class="form-control"
+          className="form-control"
           id="exampleFormControlInput1"
           placeholder="Title for your task.."
           name="title"
           value = { title }
           onChange = { handleInputChange }
+          required
         />
       </div>
       <div class="mb-3">
