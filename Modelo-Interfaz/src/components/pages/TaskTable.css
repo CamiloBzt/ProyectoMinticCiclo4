@@ -1,0 +1,22 @@
+
+* {
+    text-align: center;
+    margin: 0;
+  }
+  
+
+.table__container{
+    padding-top: 3rem;
+    padding-left: 8cm;
+}
+
+/*
+tr
+{
+display: flex;
+background: rgba(255, 255, 255, 0.1);
+padding: 10px 20px;
+color: #fff;
+margin: 5px 0;
+transition: 0.5s;
+} */
