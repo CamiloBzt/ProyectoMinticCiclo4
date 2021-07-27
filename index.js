@@ -18,5 +18,5 @@ mongoose.connect('mongodb://localhost:27017/api_rest_control_task', { useNewUrlP
 
         })
         .catch((err) => {
-        
+            console.log(err);
         });
