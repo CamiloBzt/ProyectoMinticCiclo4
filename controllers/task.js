@@ -46,6 +46,53 @@ var controller = {
     }
   },
 
+store : async (req,res,next) => {
+    try {
+      var params = req.body;
+      const user = await Task.findOne({correo: req.body.correo})
+      // console.log(user);
+      if (user) {
+        res.status(409).send({
+          message: "Sorry the email is already use" + req.body.correo+
+          " and there is a "  
+                })}
+      else{
+          if (req.body.contraseña1 !== req.body.contraseña2){
+            res.status(409).send({
+              message: "Las contraseñas no coinciden"  
+                    })
+          }
+          else{
+                // const user = await task.save(req.body);
+                let task = await new Task({
+                  name: req.body.name,
+                  correo: req.body.correo,
+                  contraseña1 : req.body.contraseña1,
+                  // contraseña2 : req.body.contraseña2,
+                  pais : req.body.pais
+              })
+              
+              task.save()
+          
+              .then(response => {
+                  res.json({
+                      message: 'Added Succesfully'
+                  })
+          
+              })
+
+            }
+          }
+          // task.save()
+      // }
+    } catch (error) {
+      res.status(500).send({
+        message: "Error --> " 
+    })
+    next(error);
+    }
+},
+
   getTasks: (req, res) => {
       // Find
       Task.find({}).sort('-_id').exec((err, tasks) => {
@@ -106,6 +153,7 @@ var controller = {
       return res.status(200).send({ status: "success", task: taskRemoved});
     });
   }
+
 
 }; // end controller
 
