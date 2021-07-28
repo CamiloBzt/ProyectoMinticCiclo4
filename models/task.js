@@ -17,15 +17,7 @@ var TaskSchema = new Schema({
     pais:{
         type:String
     },
-    tarea:{
-
-        title: String,
-        description: String,
-        date: {
-            type: Date, default: Date.now
-        },
-        priority: Number
-    }
+    tareas:[]
 });
 
 module.exports = mongoose.model('Task', TaskSchema);

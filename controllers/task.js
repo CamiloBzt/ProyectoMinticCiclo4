@@ -7,7 +7,10 @@ var controller = {
   test: (req, res) => {
     return res.status(200).send({ message: "Test Controller" });
   },
-  save: (req, res) => {
+  save: async (req, res) => {
+    // Recibir id del usuario
+    var userId = req.params.id;
+    var user = await Task.findOne({_id: userId});
     // Parametros Post
     var params = req.body;
 
@@ -23,24 +26,32 @@ var controller = {
 
     if (validate_title && validate_description) {
       // Crear tarea
-      var task = new Task();
+      var task = {
+        title: String,
+        description: String,
+        date: {
+            type: Date, default: Date.now
+        },
+        priority: Number
+      };
 
       // Asignar valores
       task.title = params.title;
       task.description = params.description;
-      task.priority = null;
+      task.priority = params.priority;
+      task.date = params.date;
 
+      user.tareas.push(task);
       // Guardar la tarea
-      task.save((err, taskStored) => {
-
-        if (err || !taskStored){
-            return res.status(404).send({ status: 'error', message: 'Task Save' });
+      Task.findOneAndUpdate({_id: userId}, user, {new:true}, (err, taskUpdated) => {
+        if(err){
+          return res.status(500).send({ status: "error", message: "Update Error" });  
         }
-
+        if (!taskUpdated){
+          return res.status(404).send({ status: "error", message: "No Data" });  
+        }
+        return res.status(200).send({ status: "success", task: taskUpdated });  
       })
-
-      // Devolver respuesta
-      return res.status(200).send({ status: 'success', task });
     } else {
       return res.status(200).send({ status: "error", message: "Invalid Data" });
     }
@@ -95,20 +106,21 @@ store : async (req,res,next) => {
 
   getTasks: (req, res) => {
       // Find
-      Task.find({}).sort('-_id').exec((err, tasks) => {
+      Task.findOne({_id: req.params.id}).exec((err, task) => {
           if (err){
             return res.status(500).send({ status: "error", message: "Error" });
           }
-          if (!tasks){
+          if (!task){
             return res.status(404).send({ status: "error", message: "No Data" });
           }
-        return res.status(200).send({ status: "success", tasks });
+          var tareas = task.tareas;
+        return res.status(200).send({ status: "success", tareas });
       })
     
   },
-  edit: (req, res) => {
+  edit: async (req, res) => {
     // Obtener id de la tarea
-    var taskId = req.params.id;
+    var userId = req.params.id;
 
     // Obtener los datos que llegan por PUT
     var params = req.body;
@@ -123,7 +135,15 @@ store : async (req,res,next) => {
 
     if (validate_title && validate_description){
       // Find and Update
-      Task.findOneAndUpdate({_id: taskId}, params, {new:true}, (err, taskUpdated) => {
+      var user = await Task.findOne({_id: userId});
+      var index = params.indice;
+      var tarea = user.tareas[index];
+      tarea.title = params.title;
+      tarea.description = params.description;
+      tarea.priority = params.priority;
+      tarea.date = params.date;
+      user.tareas[index] = tarea;
+      Task.findOneAndUpdate({_id: userId}, user, {new:true}, (err, taskUpdated) => {
         if(err){
           return res.status(500).send({ status: "error", message: "Update Error" });  
         }
@@ -138,20 +158,23 @@ store : async (req,res,next) => {
     }
   },
 
-  delete: (req, res) => {
+  delete: async (req, res) => {
     // Obtener id
-    var taskId = req.params.id;
-
+    var userId = req.params.id;
+    var params = req.body;
+    var user = await Task.findOne({_id: userId});
+    var index = params.indice;
+    user.tareas.splice(index, 1);
     // Find and delete
-    Task.findOneAndDelete({_id: taskId}, (err, taskRemoved) => {
-      if (err){
-        return res.status(500).send({ status: "error", message: "Remove Error" });  
+    Task.findOneAndUpdate({_id: userId}, user, {new:true}, (err, taskUpdated) => {
+      if(err){
+        return res.status(500).send({ status: "error", message: "Update Error" });  
       }
-      if (!taskRemoved){
-        return res.status(404).send({ status: "error", message: "No Data" });
+      if (!taskUpdated){
+        return res.status(404).send({ status: "error", message: "No Data" });  
       }
-      return res.status(200).send({ status: "success", task: taskRemoved});
-    });
+      return res.status(200).send({ status: "success", task: taskUpdated });  
+    })
   }
 
 
