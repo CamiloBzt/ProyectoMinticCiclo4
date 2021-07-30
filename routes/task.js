@@ -14,6 +14,8 @@ router.put('/saveTask/:id', TaskController.save);
 router.get('/tasks/:id', TaskController.getTasks);
 router.put('/edit/:id', TaskController.edit);
 router.post('/store', TaskController.store)
+router.post('/login', TaskController.login)
+
 router.put('/delete/:id', TaskController.delete);
 
 module.exports = router;

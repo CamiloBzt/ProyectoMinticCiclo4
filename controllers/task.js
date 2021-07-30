@@ -113,6 +113,35 @@ var controller = {
       next(error);
     }
   },
+  login: async (req, res, next) => {
+    try {
+      const user =  await Task.findOne({ correo: req.body.correo })
+      if(user){
+        // const passwordISvalid = compareSync(req.body.contraseña, user.contraseña1)
+        if (req.body.contraseña1 === user.contraseña1) {
+          res.status(200).send({
+            auth: true,
+            user: user
+          })
+      } else {
+          res.status(401).json({
+
+              error: 'Error en el usuario o contraseña'
+          })
+        }
+  } else {
+      res.status(404).json({
+
+          error: 'User Not Found.'
+      })
+  }
+}catch (error) {
+  res.status(500).send({
+      message: 'Error aqui->',
+
+  })
+  next(error);
+}}, 
   getUsers: (req, res) => {
     // Find
     Task.find({})
