@@ -1,0 +1,58 @@
+
+
+button {
+    width: 160px;
+}
+
+.priority-options {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.remember-btn-group {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+input[type="radio"] {
+    width: 200px;
+}
+
+.btn-crear {
+    margin: 1rem auto;
+}
+
+.form-container {
+    background-color: red;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.input-control {
+    background-color: salmon;
+    display: flex;
+    flex-direction: column;
+    width: 85%;
+    margin: 0 auto;
+    gap: .7rem;
+}
+
+.input-control__title {
+    background-color: seagreen;
+    align-self: flex-start;
+}
+
+.input-control__input {
+    height: 2rem;
+    border: transparent;
+    outline: none;
+    display: flex;
+}
+
+.invalid-input {
+    background-color: aquamarine;    
+}

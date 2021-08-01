@@ -39,8 +39,10 @@ var controller = {
       // Asignar valores
       task.title = params.title;
       task.description = params.description;
-      task.priority = params.priority;
-      task.date = params.date;
+      task.priority = params.priority || 1;
+      task.date = params.taskDate;
+
+      console.log(task);
 
       user.tareas.push(task);
       // Guardar la tarea
@@ -194,7 +196,7 @@ var controller = {
       tarea.title = params.title;
       tarea.description = params.description;
       tarea.priority = params.priority;
-      tarea.date = params.date;
+      tarea.date = params.taskDate;
       user.tareas[index] = tarea;
       Task.findOneAndUpdate(
         { _id: userId },
@@ -228,6 +230,7 @@ var controller = {
     var params = req.body;
     var user = await Task.findOne({ _id: userId });
     var index = params.indice;
+    console.log( index );
     user.tareas.splice(index, 1);
     // Find and delete
     Task.findOneAndUpdate(
