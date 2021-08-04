@@ -250,6 +250,57 @@ var controller = {
       }
     );
   },
+
+  calendar: async (req, res) => {
+    
+    var userId = req.params.id;
+
+    var user = await Task.findOne({ _id: userId });
+    // Fecha a buscar
+
+    var searchDate = req.params.date;
+
+    // Find task
+    var tareasUsuario = user.tareas;
+    var tareasCalendar = [];
+
+    for (let i = 0; i < tareasUsuario.length; i++) {
+      if(tareasUsuario[i].date === searchDate){
+        tareasCalendar.push(tareasUsuario[i]);
+      }
+    }
+    if(tareasCalendar){
+      return res.status(200).send({ status: "success", tareasCalendar });
+    }else{
+      return res.status(404).send({ status: "error" });
+    }
+  },
+
+  searchTask: async (req, res) => {
+
+    var userId = req.params.id;
+
+    var user = await Task.findOne({ _id: userId });
+    // String a buscar
+
+    var searchString = req.params.search;
+
+    // Find task
+    var tareasUsuario = user.tareas;
+    var tareasBusqueda = [];
+
+    for (let i = 0; i < tareasUsuario.length; i++) {
+      if(validator.contains(tareasUsuario[i].title, searchString)){
+        tareasBusqueda.push(tareasUsuario[i]);
+      }
+    }
+    if(tareasBusqueda){
+      return res.status(200).send({ status: "success", tareasBusqueda });
+    }else{
+      return res.status(404).send({ status: "error" });
+    }
+  },
+
 }; // end controller
 
 module.exports = controller;

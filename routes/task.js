@@ -15,7 +15,8 @@ router.get('/tasks/:id', TaskController.getTasks);
 router.put('/edit/:id', TaskController.edit);
 router.post('/store', TaskController.store)
 router.post('/login', TaskController.login)
-
 router.put('/delete/:id', TaskController.delete);
+router.get('/search/:id/:search', TaskController.searchTask);
+router.get('/calendar/:id/:date', TaskController.calendar);
 
 module.exports = router;
