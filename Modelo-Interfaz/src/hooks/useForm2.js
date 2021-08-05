@@ -2,11 +2,14 @@ import { FormControlLabel } from '@material-ui/core';
 import React, { useState } from 'react';
 import { addTaskFetch, getTasksFetch, editTaskFetch } from '../helpers/tasksFetch';
 import { loginFetch } from '../helpers/userFetch';
+import Swal from 'sweetalert2';
+
 import types from '../types/types';
 
 export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatchUser, history  ) => {
 
     const [formValues, setformValues] = useState( initialState );
+    const [error, setError] = useState(false);
     
     const handleInputChange = ( { target }) => {
         setformValues({
@@ -23,6 +26,10 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
             .then( data => {
             
                 if (data.error) {
+                      setError(true);
+                      setTimeout(() => {
+                        setError(false);
+                      }, 3000);
                       return;  
                 }
 
@@ -43,11 +50,13 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
                 
                 dispatchUser( action );  
 
-               /*  dispatchTask({
-                    type: types.getTasks,
-                    payload: tareas
-                }); */
-              
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Bienvenido ' + name,
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
 
                 history.push('/TaskControl');
             })
@@ -93,14 +102,17 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
                     payload: tasks
                 };
 
-            /*     const action = {
-                    type: types.getTasks,
-                    payload: {
-
-                    }
-                } */
-
                 dispatchTask( action );
+
+                
+                Swal.fire({
+                    position: 'top',
+                    icon: 'success',
+                    title: 'Tarea agregada con exito',
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                
                 reset();
                 handleClose();
             });
@@ -163,6 +175,7 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
         handleEdit,
         handleSubmitLogin,
         reset,
+        error
     }
 
 }

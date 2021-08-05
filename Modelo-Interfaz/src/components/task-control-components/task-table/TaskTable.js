@@ -1,91 +1,110 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useMemo, useContext, useState, useEffect } from 'react';
+import { useTable, useSortBy, usePagination } from 'react-table';
+import { COLUMNS } from './columns';
 import { TaskContext } from '../../../contexts/TaskContext';
 import { UserContext } from "../../../contexts/UserContext";
-import { getTasksFetch } from "../../../helpers/tasksFetch";
-import types from "../../../types/types";
 import TaskModalEdit from "../task-modal/TaskModalEdit";
-import "./TaskTable.css";
+import types from "../../../types/types";
+import { getTasksFetch } from "../../../helpers/tasksFetch";
+import Swal from 'sweetalert2';
 
-export const TaskTable = React.memo( () => {
+import './TaskTable.css';
 
-const { tasks, dispatchTask } = useContext( TaskContext );
 
-const { user, dispatchUser } = useContext( UserContext );
 
-  const onOpenEdit = (task) => {
-    console.log(task);
-  };
+export const TaskTable = () => {
+
+  const { tasks, dispatchTask } = useContext(TaskContext);
+
+  const { user, dispatchUser } = useContext(UserContext);
+
+  const columns = useMemo(() => COLUMNS, []);
+
+  console.log( tasks );
+
 
 
   const handleDelete = ( taskIdx, userId ) => {
-    fetch('http://localhost:4000/api/delete/' + userId,  {
-      method: 'PUT',
-      body: JSON.stringify( { indice: taskIdx } ),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-  })
-        .then(res => res.json())
-        .then(data => {
-           getTasksFetch( userId )
-            .then(data => {
 
-              const tasks =  data.tareas.map(task => {
-                return {
-                    ...task,
-                    priority: {
-                       scale: task.priority,
-                       get text() {
-                            switch (task.priority) {
-                                case '1': return  'LOW'
-                                case '2': return 'MEDIUM'
-                                case '3': return 'HIGH'
-                                default: return 'LOW'
-                            }
-                        },
-                        get cssClass() {
-                            switch (task.priority) {
-                                case '1': return  'success'
-                                case '2': return 'warning'
-                                case '3': return 'danger'
-                                default: return 'success'
+    Swal.fire({
+      title: 'Esta seguro que desea eliminar esta tarea?',
+      text: "No será posible revertirlo!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        fetch('http://localhost:4000/api/delete/' + userId,  {
+          method: 'PUT',
+          body: JSON.stringify( { indice: taskIdx } ),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+      })
+            .then(res => res.json())
+            .then(data => {
+               getTasksFetch( userId )
+                .then(data => {
+    
+                  const tasks =  data.tareas.map(task => {
+                    return {
+                        ...task,
+                        priority: {
+                           scale: task.priority,
+                           get text() {
+                                switch (task.priority) {
+                                    case '1': return  'LOW'
+                                    case '2': return 'MEDIUM'
+                                    case '3': return 'HIGH'
+                                    default: return 'LOW'
+                                }
+                            },
+                            get cssClass() {
+                                switch (task.priority) {
+                                    case '1': return  'success'
+                                    case '2': return 'warning'
+                                    case '3': return 'danger'
+                                    default: return 'success'
+                                }
                             }
                         }
                     }
-                }
+                });
+    
+                  dispatchTask({
+                    type:types.getTasks,
+                    payload: tasks
+                  });
+                });
             });
 
-              dispatchTask({
-                type:types.getTasks,
-                payload: tasks
-              });
-            });
-        });
+
+
+
+        Swal.fire(
+          'Eliminada!',
+          'La tarea ha sido eliminada',
+          'success'
+        )
+      }
+    })
+
+
+
+
+  
   };
 
+  const data = useMemo(() => {
 
-  return (
-    <div className="table__container">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Done</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Priority</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* ROW 1 */}
-             {
-              tasks.map(( task, idx ) => (
-              <tr key = { `${task.title}${task.description}${task.description?.scale}` }>
-            <th scope="row">{ (idx + 1) }</th>
-            <td>{ task.title }</td>
-            <td>
-              <div class="form-check form-switch">
+    return tasks.map( (task, idx ) => {
+
+      const { title } = task;
+      const done = (
+        <div class="form-check form-switch">
                 <input
                   class="form-check-input"
                   type="checkbox"
@@ -93,39 +112,144 @@ const { user, dispatchUser } = useContext( UserContext );
                   checked
                 />
               </div>
-            </td>
-            <td>
-               <TaskModalEdit 
-                    task={ {...task, indice: idx  }}
-                    userId={ user['_id']  } />
-            </td>
-            <td>
-              <button type="button" class="btn btn-outline-danger" onClick={ () => handleDelete( idx, user['_id'] ) }>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-trash-fill"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-                </svg>
-              </button>
-            </td>
-            <td className = { `table-${task.priority?.cssClass }` }>
-              <span className="btn priority-text">
-               {
-                 task.priority?.text
-               }
-              </span>
-            </td>
-          </tr>
-              ))
-            }
-         
-                 </tbody>
-      </table>
-    </div>
-  );
-} );
+      );
+
+      const edit = (
+        <TaskModalEdit 
+        task={ {...task, indice: idx  }}
+        userId={ user['_id']  } />
+      );
+
+      const deleted = (
+        <button type="button" class="btn btn-outline-danger" onClick={ () => handleDelete( idx, user['_id'] ) }>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          class="bi bi-trash-fill"
+          viewBox="0 0 16 16"
+        >
+          <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+        </svg>
+      </button>
+      );
+
+      const priority = (
+        <span 
+          className=  { `btn priority-text btn-${task.priority?.cssClass}` }
+          style= {{
+            display: 'inline-block',
+            width: '100%'
+          }}
+          >
+         {
+           task.priority?.text
+         }
+        </span>
+      );
+
+
+      return {
+        title,
+        id: idx + 1,
+        done,
+        edit,
+        delete: deleted,
+        priority
+      }
+
+    });
+
+  }, [ tasks ]);
+
+  const tableInstance = useTable({
+    columns: COLUMNS,
+    data,
+  }, useSortBy, usePagination);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    page,
+    prepareRow,
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage,
+    state,
+    pageOptions,
+    setPageSize
+  } = tableInstance;
+
+  
+  useEffect(() => {
+    setPageSize(2);
+  }, []);
+
+  return (
+    <>
+    <table {...getTableProps()} >
+      <thead>
+        {
+          headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()} className="table-success">
+              {
+                headerGroup.headers.map(colum => (
+                  <th {...colum.getHeaderProps(colum.getSortByToggleProps())}>
+                    {colum.render('Header')}
+                {/*     <span>
+                    {colum.isSorted
+                      ? colum.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span> */}
+                  </th>
+                ))
+              }
+            </tr>
+          ))
+        }
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {
+          page.map(row => {
+            prepareRow(row);
+            return (
+              <tr { ...row.getRowProps() }>
+                {
+                  row.cells.map(cell => {
+                 /*    console.log(cell); */
+                    return  <td { ...cell.getCellProps() }>
+                      {
+                        cell.render('Cell')
+                      }
+                    </td>
+                  })
+                }
+              </tr>
+            )
+          })
+        }
+      </tbody>
+    </table>
+     <div className="table__pagination">
+       <span>
+          Page{' '}
+            <strong>{ state.pageIndex + 1 } of { pageOptions.length }</strong>
+       </span>{ ' ' }
+        <button 
+          className="btn btn-primary" 
+          onClick={ () => { previousPage() } }
+          disabled={ !canPreviousPage }> Previous </button>
+        <button 
+          className="btn btn-primary" 
+          onClick={ () => { nextPage() }}
+          disabled={ !canNextPage }
+          >Next</button>
+     </div>
+    </>
+  )
+}

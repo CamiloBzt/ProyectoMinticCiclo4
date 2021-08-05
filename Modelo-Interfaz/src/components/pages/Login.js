@@ -13,7 +13,8 @@ export const Login = ({ history }) => {
 
   const { formValues,
         handleInputChange,
-        handleSubmitLogin } = useForm2({
+        handleSubmitLogin,
+        error } = useForm2({
     email: '',
     contraseña1: '',
   }, null, null, dispatchUser, history);
@@ -27,9 +28,14 @@ export const Login = ({ history }) => {
     <form className="login" onSubmit = { handleSubmitLogin }>
       <div className="login__avatar"></div>
 
-  {/* <div className="login__error">
-        usuario y/o password incorrectos
-      </div> */}
+    {
+      error &&
+          <div className="login__error">
+          usuario y/o password incorrectos
+        </div>
+    }
+
+   
       <div><h4>Por favor ingrese su usuario y contraseña</h4></div>
 
       <div className="login__field">

@@ -67,7 +67,7 @@ export default function TaskModal({ setUpdate, update }) {
   const { formValues, handleInputChange, handleSubmit } = useForm2({
     title: '',
     description: '',
-    priority: ''
+    priority: '1'
   }, dispatchTask, handleClose);
 
   const { title, description, taskDate } = formValues;

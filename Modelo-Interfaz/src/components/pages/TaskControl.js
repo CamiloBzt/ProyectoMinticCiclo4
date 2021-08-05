@@ -3,6 +3,7 @@ import { useTasksUpdate } from "../../hooks/useUpdateTasks";
 import TaskCalendar from "../task-control-components/task-calendar/TaskCalendar";
 import { TaskManage } from "../task-control-components/task-manage/TaskManage";
 import { TaskTable } from "../task-control-components/task-table/TaskTable";
+import { TaskTable2 } from "../task-control-components/task-table/TaskTable2";
 import { TaskContext } from '../../contexts/TaskContext';
 import taskReducer from "../../reducers/TaskReducer";
 import { UserContext } from "../../contexts/UserContext";

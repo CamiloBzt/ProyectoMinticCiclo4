@@ -56,6 +56,10 @@ export const Button = ({
         className={`btn ${checkButtonStyle} ${checkButtonSize}`}
         onClick={ handleClick }
         type={type}
+        style={{
+          color: 'white',
+          backgroundColor: 'black'
+        }}
       >
         {children}
       </button>
