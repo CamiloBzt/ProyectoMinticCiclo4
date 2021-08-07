@@ -2,6 +2,8 @@
 
 var validator = require("validator");
 var Task = require("../models/task");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 var controller = {
   test: (req, res) => {
@@ -87,6 +89,7 @@ var controller = {
             message: "Las contraseñas no coinciden",
           });
         } else {
+          req.body.contraseña1 = bcrypt.hashSync(req.body.contraseña1, 10);
           // const user = await task.save(req.body);
           let task = await new Task({
             name: req.body.name,
@@ -119,10 +122,14 @@ var controller = {
     try {
       const user =  await Task.findOne({ correo: req.body.correo })
       if(user){
+        const passwordIsValid = bcrypt.compareSync(req.body.contraseña1, user.contraseña1);
         // const passwordISvalid = compareSync(req.body.contraseña, user.contraseña1)
-        if (req.body.contraseña1 === user.contraseña1) {
+        //if (req.body.contraseña1 === user.contraseña1) {
+          if(passwordIsValid){
+            const token = jwt.sign({name: user.name},'secretValue',{expiresIn:'1h'})
           res.status(200).send({
             auth: true,
+            tokenReturn : token,
             user: user
           })
       } else {
