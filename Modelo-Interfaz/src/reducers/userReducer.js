@@ -4,6 +4,8 @@ import types from '../types/types';
 
 export default function userReducer( state = {}, action = {}) {
 
+    console.log('ffff', action);
+
     switch ( action.type ) {
         
         case types.getUser:

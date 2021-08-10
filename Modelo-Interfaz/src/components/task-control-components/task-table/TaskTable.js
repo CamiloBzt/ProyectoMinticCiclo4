@@ -20,9 +20,6 @@ export const TaskTable = () => {
 
   const columns = useMemo(() => COLUMNS, []);
 
-  console.log( tasks );
-
-
 
   const handleDelete = ( taskIdx, userId ) => {
 
@@ -37,15 +34,23 @@ export const TaskTable = () => {
     }).then((result) => {
       if (result.isConfirmed) {
 
+        const token = localStorage.getItem( 'token' );
+
         fetch('http://localhost:4000/api/delete/' + userId,  {
           method: 'PUT',
           body: JSON.stringify( { indice: taskIdx } ),
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            token
           }
       })
             .then(res => res.json())
             .then(data => {
+
+              if (data?.message) {
+                throw new Error(data.message);
+              }
+
                getTasksFetch( userId )
                 .then(data => {
     
@@ -79,6 +84,19 @@ export const TaskTable = () => {
                     payload: tasks
                   });
                 });
+            })
+            .catch(err => {
+              if ('Error: Auth Failed'.localeCompare(err) === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Sesión Finalizada',
+                    text: 'Será enviado a login para iniciar una nueva sesión',
+                    timer: 3000
+                  }).then( data => {
+                    localStorage.clear();
+                    dispatchUser( { type: types.logout } );
+                  });
+            }
             });
 
 
@@ -99,6 +117,8 @@ export const TaskTable = () => {
   };
 
   const data = useMemo(() => {
+
+    console.log(tasks);
 
     return tasks.map( (task, idx ) => {
 
@@ -149,6 +169,12 @@ export const TaskTable = () => {
         </span>
       );
 
+      const taskDate = (
+        <span>
+         { task.date }
+        </span>
+      );
+
 
       return {
         title,
@@ -156,7 +182,8 @@ export const TaskTable = () => {
         done,
         edit,
         delete: deleted,
-        priority
+        priority,
+        date: taskDate
       }
 
     });
@@ -185,7 +212,7 @@ export const TaskTable = () => {
 
   
   useEffect(() => {
-    setPageSize(2);
+    setPageSize(5);
   }, []);
 
   return (

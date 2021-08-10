@@ -37,12 +37,17 @@ export default function TaskModalList({ searchForm: { search } }) {
     const [filteredTasks, setfilteredTasks] = useState([]);
     const { user } = useContext(UserContext);
 
-    const searchTasksByTitle = ( tasks=[] ) => tasks.filter(t => t.title.includes( search ));
+    const searchTasksByTitle = ( tasks=[] ) => {
+
+        if (tasks.length === 0) handleClose();
+
+        return tasks.filter(t => t.title.includes( search ));
+    }
 
 
     useEffect(() => {
         if (!open) return;
-        setfilteredTasks( searchTasksByTitle( user?.tareas ) );
+        setfilteredTasks( searchTasksByTitle( user?.tasks ) );
     }, [ open ]);
 
 

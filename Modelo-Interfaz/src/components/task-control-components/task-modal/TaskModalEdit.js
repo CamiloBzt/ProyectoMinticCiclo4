@@ -4,6 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import { useForm2 } from '../../../hooks/useForm2';
 import { dateToInputDate } from '../../../helpers/Helper';
 import { TaskContext } from '../../../contexts/TaskContext';
+import { UserContext } from '../../../contexts/UserContext';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -45,13 +46,15 @@ export default function TaskModalEdit({ task, userId }) {
     setOpen(false);
   };
   const { dispatchTask } = useContext( TaskContext );
+  const { dispatchUser } = useContext( UserContext );
+
   const { formValues, handleEdit, handleInputChange } = useForm2({
     title: task.title,
     description: task.description,
     taskDate: task.date,
     priority: task.priority?.scale || 1,
     id: task['_id']
-  }, dispatchTask, handleClose);
+  }, dispatchTask, handleClose, dispatchUser);
 
   const { title, description, taskDate, priority } = formValues;
 

@@ -40,8 +40,9 @@ export const Button = ({
   const handleClick = () => {
     
     if (user?.auth) {
-      dispatchUser({type: types.logout});
       localStorage.removeItem( 'tasks' );
+      localStorage.removeItem( 'token' );
+      dispatchUser({type: types.logout});
       history.push('/');
     }
     else {

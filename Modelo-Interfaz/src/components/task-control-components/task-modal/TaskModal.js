@@ -68,7 +68,7 @@ export default function TaskModal({ setUpdate, update }) {
     title: '',
     description: '',
     priority: '1'
-  }, dispatchTask, handleClose);
+  }, dispatchTask, handleClose, dispatchUser);
 
   const { title, description, taskDate } = formValues;
 
@@ -178,6 +178,7 @@ export default function TaskModal({ setUpdate, update }) {
             name="taskDate"
             value={taskDate}
             onChange={handleInputChange}
+            required
           />
         </div>
 

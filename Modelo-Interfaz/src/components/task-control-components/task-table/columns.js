@@ -31,4 +31,8 @@ export const COLUMNS = [
       Header: 'Prioriy',
       accessor: 'priority'
     },
+    {
+      Header: 'Date',
+      accessor: 'date'
+    },
   ];

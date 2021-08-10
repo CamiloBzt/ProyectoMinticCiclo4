@@ -24,7 +24,7 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
 
         loginFetch( formValues )
             .then( data => {
-            
+
                 if (data.error) {
                       setError(true);
                       setTimeout(() => {
@@ -33,7 +33,7 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
                       return;  
                 }
 
-                const { name, pais, tareas, _id } = data.user;
+                const { name, pais, tareas, _id, tokenReturn: token } = data.user;
 
                 const action = {
                     type: types.getUser,
@@ -42,10 +42,13 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
                         name,
                         pais,
                         tareas,
-                        _id
+                        _id,
+                        token: data?.tokenReturn
                     }
                 }; 
 
+                localStorage.setItem('token', data?.tokenReturn);
+                localStorage.setItem('token-init-time', new Date().getTime() );
 
                 
                 dispatchUser( action );  
@@ -115,6 +118,22 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
                 
                 reset();
                 handleClose();
+            })
+            .catch(err => {
+        
+                if ('Error: Auth Failed'.localeCompare(err.message) === 0) {
+                    handleClose();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Sesión Finalizada',
+                        text: 'Será enviado a login para iniciar una nueva sesión',
+                        timer: 3000
+                      }).then( data => {
+                        localStorage.clear();
+                        dispatchUser( { type: types.logout } );
+                      });
+                }
+
             });
     };
 
@@ -159,6 +178,20 @@ export const useForm2 = ( initialState = {}, dispatchTask, handleClose, dispatch
                         dispatchTask( action );
                         handleClose();
                     });
+            })
+            .catch(err => {
+                if ('Error: Auth Failed'.localeCompare(err.message) === 0) {
+                    handleClose();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Sesión Finalizada',
+                        text: 'Será enviado a login para iniciar una nueva sesión',
+                        timer: 3000
+                      }).then( data => {
+                        localStorage.clear();
+                        dispatchUser( { type: types.logout } );
+                      });
+                }
             });
     };
 
