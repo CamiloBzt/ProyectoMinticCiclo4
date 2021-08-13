@@ -1,6 +1,9 @@
 "use strict";
 
 var validator = require("validator");
+var fs = require('fs');
+var path = require('path');
+
 var Task = require("../models/task");
 
 var controller = {
@@ -158,6 +161,23 @@ var controller = {
         return res.status(200).send({ status: "success", users });
       });
   },
+  deleteUsers: (req, res) => {
+
+    // Recoger id de la url
+    var userId = req.params.id;
+
+    // Find and delete
+    Task.findOneAndDelete({_id: userId}, (err, userRemoved) => {
+      if (err){
+        return res.status(500).send({ status: "error", message: "Delete error" });
+      }
+      if (!userRemoved){
+        return res.status(404).send({ status: "error", message: "No user" });
+      }
+      return res.status(200).send({ status: "success", userRemoved });
+    })
+  },
+
   getTasks: (req, res) => {
     // Find
     Task.findOne({ _id: req.params.id }).exec((err, task) => {
@@ -300,6 +320,68 @@ var controller = {
       return res.status(404).send({ status: "error" });
     }
   },
+
+  upload: (req, res) => {
+  
+    // Recoger el fichero
+    var file_name = '...'
+
+    if(!req.files){
+      return res.status(404).send({ status: "error", message: "No image"});  
+    }
+
+    // Conseguir el nombre y la extension del archivo
+    var file_path = req.files.file0.path;
+
+    var file_split = file_path.split('\\');
+
+    // * ADVERTENCIA * EN LINUX O MAC
+    // var file_split = file_path.split('/');
+
+    // Nombre del archivo
+
+    var file_name = file_split[2];
+
+    // Extension del fichero
+
+    var extension_split = file_name.split('.');
+    var file_ext = extension_split[1];
+
+    // Comprobar la extensión, solo imagenes
+    if (file_ext != 'png' && file_ext != 'jpg' && file_ext != 'jpeg' && file_ext != 'gif'){
+      // Borrar archivo subido
+      fs.unlink(file_path, (err) => {
+        return res.status(500).send({ status: "error", message: "Invalid extension"  });
+      })
+    }else{
+      // Si todo es valido, buscar el usuario y asignarle el nombre de la imagen y actualizarlo
+      var userId = req.params.id;
+
+      Task.findOneAndUpdate({_id: userId}, {image:file_name}, {new:true}, (err, userUpdate) => {
+        if (err || !userUpdate){
+          return res.status(500).send({ status: "error", message: "error"  });  
+        }
+        return res.status(200).send({ status: "success", user: userUpdate  });
+      })
+    }
+  },// end upload file
+
+  getImage: (req, res) => {
+    var file = req.params.image;
+    var path_file = './upload/users/'+file;
+    // Comprobar si fichero existe
+
+    fs.exists(path_file, (exists) =>{
+      if(exists){
+
+        return res.sendFile(path.resolve(path_file));
+      }else{
+        return res.status(404).send({ status: "error", message: "No image"});
+      }
+    })
+
+  },
+
 
 }; // end controller
 

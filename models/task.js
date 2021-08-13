@@ -17,7 +17,10 @@ var TaskSchema = new Schema({
     pais:{
         type:String
     },
-    tareas:[]
+    tareas:[],
+    
+    image: String
+    
 });
 
 module.exports = mongoose.model('Task', TaskSchema);
