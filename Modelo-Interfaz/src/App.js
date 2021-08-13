@@ -26,6 +26,11 @@ function App() {
   return (
     <>
       <Router>
+        <div 
+        /*   style={{
+          backgroundColor: '#100c08'
+        }} */
+        >
 
       <UserContext.Provider value={{ user, dispatchUser }}>
 
@@ -48,7 +53,7 @@ function App() {
         </Switch>
 
         </UserContext.Provider>
-
+        </div>
       </Router>
     </>
   );

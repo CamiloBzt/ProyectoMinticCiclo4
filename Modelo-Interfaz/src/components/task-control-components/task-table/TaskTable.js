@@ -217,8 +217,11 @@ export const TaskTable = () => {
 
   return (
     <>
+    <div className="table__container">
     <table {...getTableProps()} >
-      <thead>
+      <thead style={{
+        backgroundColor: '#004225',
+      }}>
         {
           headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()} className="table-success">
@@ -262,6 +265,7 @@ export const TaskTable = () => {
         }
       </tbody>
     </table>
+    </div>
      <div className="table__pagination">
        <span>
           Page{' '}

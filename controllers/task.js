@@ -127,7 +127,7 @@ var controller = {
         //if (req.body.contraseña1 === user.contraseña1) {
           if(passwordIsValid){
             const token = jwt.sign({name: user.name},'secretValue',
-              {expiresIn: 30 })
+              {expiresIn: 200 })
           res.status(200).send({
             auth: true,
             tokenReturn : token,

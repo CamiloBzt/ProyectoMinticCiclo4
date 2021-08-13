@@ -27,7 +27,8 @@ export default function TaskCalendar() {
         firstRender.current = false;
     }
     else {
-      setfilteredTasks( searchTaskByDate( user?.tareas ) );
+      console.log( user );
+      setfilteredTasks( searchTaskByDate( user?.tasks ) );
     }
   }, [ value ]);
 

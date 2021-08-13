@@ -34,9 +34,9 @@ export const TaskManage = ({ setUpdate, update }) => {
 
       <div className="btn-group">
         <TaskModal setUpdate={setUpdate} update={update}/>
-        <button type="button" className="btn btn-success btn-statistics">
+      {/*   <button type="button" className="btn btn-success btn-statistics">
           Statistics
-        </button>
+        </button> */}
       </div>
     </div>
   );
