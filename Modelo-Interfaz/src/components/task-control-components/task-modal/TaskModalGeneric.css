@@ -1,0 +1,17 @@
+.task__title {
+    background-color: seagreen;
+    color: whitesmoke;
+    margin: 0 auto;
+    width: 70%;
+    line-height: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.task__text {
+    background-color: #ADDFAD;
+    width: 70%;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    min-height: 4rem;
+    padding: .5rem;
+}

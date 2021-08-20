@@ -5,6 +5,8 @@ import 'react-calendar/dist/Calendar.css';
 import { UserContext } from '../../../contexts/UserContext';
 import TaskModalByDate from '../task-modal/TaskModalByDate';
 
+import './TaskCalendar.css';
+
 export default function TaskCalendar() {
 
   const [value, onChange] = useState(new Date());
@@ -34,7 +36,7 @@ export default function TaskCalendar() {
 
 
   return (
-    <>
+    <div className="calendar-container">
     <TaskModalByDate 
       filteredTasks={ filteredTasks } 
     />
@@ -42,7 +44,7 @@ export default function TaskCalendar() {
         onChange={onChange}
         value={value}
       />
-    </>
+    </div>
 
 
     

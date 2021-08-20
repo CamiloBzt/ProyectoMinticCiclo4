@@ -96,7 +96,10 @@ export const TaskControl = () => {
 
         <TaskContext.Provider value = { { tasks, dispatchTask } }>
 
-        <div className="taskControl__manage" >
+        <div className="taskControl__manage" 
+          style={{
+            marginBottom: '3rem'
+          }}>
           <TaskManage />
         </div>
 
