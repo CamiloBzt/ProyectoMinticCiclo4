@@ -149,21 +149,6 @@ export default function TaskModalEdit({ task, userId }) {
 
         <div className="mb-3">
           <label htmlFor="exampleFormControlInput1" className="form-label">
-            Recordar:
-          </label>
-          <div className="remember-btn-group">
-            <button type="button" class="btn btn-outline-info">
-              SI
-            </button>
-            <button type="button" class="btn btn-outline-info">
-              NO
-            </button>
-          </div>
-
-        </div>
-
-        <div className="mb-3">
-          <label htmlFor="exampleFormControlInput1" className="form-label">
             Fecha:
           </label>
           <input

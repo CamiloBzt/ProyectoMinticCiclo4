@@ -61,14 +61,7 @@ const Registrarse = ( { history } ) => {
             <img src="http://placeimg.com/200/200/nature" alt=''/>
 
             <   div class="col align-items-center"> 
-                    <div className='form-row'>
-                    <div class="col-md-4">
-                            <label class="align-items-left" for="Upload photo">Imagen de perfil</label>
-                    </div>
-                        <div class="col-md-4">
-                            <input id="Upload photo" name="Upload photo" class="input-file" type="file"/>
-                        </div>
-                    </div>
+        
                         
 
                 </div>

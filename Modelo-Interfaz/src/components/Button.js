@@ -42,6 +42,7 @@ export const Button = ({
     if (user?.auth) {
       localStorage.removeItem( 'tasks' );
       localStorage.removeItem( 'token' );
+      localStorage.removeItem('token-init-time');
       dispatchUser({type: types.logout});
       history.push('/');
     }
